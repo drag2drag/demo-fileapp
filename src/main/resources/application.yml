@@ -1,0 +1,61 @@
+server:
+  port: 9000
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: fileclient
+    
+  profiles:
+    active: localhost-mac
+    
+  codec:
+    max-in-memory-size: 2000MB
+    
+  thymeleaf:
+    cache: false
+    enabled: true 
+
+springdoc:
+  swagger-ui.operationsSorter: method
+ 
+---
+
+spring:
+  profiles: localhost-mac
+   
+
+fileservice:
+  endpoint: http://localhost:8999
+  
+useKeycloak: false
+  
+---
+
+spring:
+  profiles: dev
+  
+  security:
+    oauth2:
+      client:
+        registration:
+          zurich: 
+            authorization-grant-type: password
+            client-id: demo-fileclient
+            client-secret: dc1eaead-214d-47fc-a30c-6f85f44b23ef
+            scope: oidc
+#            username: svc_fileclient
+#            password: dd
+            
+        provider:
+          zurich:
+            token-uri: http://localhost:8181/auth/realms/zurich/protocol/openid-connect/token
+
+fileservice:
+  endpoint: http://localhost:8999/scenarion-3/files/storage
+  ep-upload: http://localhost:8999/scenarion-3/files/storage
+  
+useKeycloak: true
+
+  
